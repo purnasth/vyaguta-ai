@@ -95,7 +95,7 @@ input::placeholder- {
   margin-bottom: 12rem;
 }
 
-.st-emotion-cache-1lqf7hx {
+.stSidebar {
   /* background-color: rgba(14, 17, 23, 0.5); */
   background-color: rgba(14, 17, 23, 0);
   backdrop-filter: blur(12px);
@@ -496,9 +496,9 @@ h3.sidebar-title {
   font-size: 1rem;
   background: var(--vyaguta-gradient-loading);
   background-size: 300% 300%;
-  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   animation: gradientShift 3s ease-in-out infinite;
 }
 
@@ -615,7 +615,8 @@ h3.sidebar-title {
   position: fixed;
   bottom: 1rem;
   z-index: 99 !important;
-  width: 700px;
+  width: 100%;
+  max-width: 700px;
   backdrop-filter: blur(4px);
   left: 50%;
   transform: translate(-50%, 0);
@@ -689,7 +690,7 @@ h3.sidebar-title {
 .footer {
   /* text-align: center; */
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.02);
   border-radius: 10px;
   margin-top: 1rem;
   /* add the space-y: 1rem */

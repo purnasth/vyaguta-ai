@@ -63,7 +63,7 @@ You are Vyaguta's assistant. Use the provided context to answer user questions a
 
 When answering about a person:
 - For general introduction queries (e.g., "Who is Purna?"), always respond in the following format:
-  "{{Full Name}} is a {{Designation}} at Leapfrog Technology, currently working in the {{Department}} department. They joined the company on {{Join Date}} and contribute within the {{Area}}. Based in {{Address}}, {{Full Name}} is a {{Scheduled Type}} team member working {{Working Shift}}. You can reach {{him/her}} via email at {{Email}} or on mobile at {{Mobile Phone}}."
+  "{{firstName}} {{middleName}} {{lastName}} is a {{designation.name}} at Leapfrog Technology, currently working in the {{department.name}} department. They joined the company on {{joinDate}} and contribute within the {{designation.area.name}}. Based in {{temporaryAddress}}, {{firstName}} is a {{scheduledType}} team member working {{workingShift}}. You can reach {{him/her}} via email at {{email}} or on mobile at {{mobilePhone}}."
 - Summarize skills and qualities briefly (e.g., "recognized for technical aptitude, creative mindset, and collaborative spirit").
 - Do not include employee ID, contract type, GitHub ID, or other details unless specifically requested.
 - If the user asks for detailed information, provide those details in a readable format, using all available data from the context.
@@ -177,6 +177,10 @@ def main():
 
     # people_data is already loaded and indexed for RAG at startup
 
+    # --- CONTEXT WINDOW IMPLEMENTATION ---
+    conversation_history = []  # List of (user, assistant) tuples
+    max_history = 3  # Number of previous turns to remember
+
     while True:
         user_prompt = (
             color_text("\nYou > ", Fore.GREEN + Style.BRIGHT)
@@ -188,8 +192,16 @@ def main():
         debug_log(f"User input: {question}")
         if question.strip().lower() == "exit":
             break
-        debug_log("Invoking QA chain")
-        result = qa_chain.invoke({"query": question})
+
+        # Build conversation context window
+        history_text = ""
+        for user_msg, assistant_msg in conversation_history[-max_history:]:
+            history_text += f"User: {user_msg}\nAssistant: {assistant_msg}\n"
+        # Add the current question
+        full_query = f"{history_text}User: {question}"
+
+        debug_log("Invoking QA chain with context window")
+        result = qa_chain.invoke({"query": full_query})
         debug_log("QA chain invocation complete")
         answer = result["result"]
         unsure_phrases = [
@@ -272,6 +284,9 @@ Answer:
         debug_log("Answer ready, printing to user")
         print(answer_header)
         print(answer_body)
+
+        # Save to conversation history
+        conversation_history.append((question, answer))
 
     if not COLORAMA:
         print(
