@@ -16,3 +16,6 @@ langchain-openai>=0.1.6
 colorama>=0.4.6
 watchdog
 streamlit>=1.35.0
+
+# LangSmith for observability
+langsmith>=0.1.0

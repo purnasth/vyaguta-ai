@@ -1,12 +1,14 @@
 """
-Vyaguta Assistant Chatbot
+Vyaguta Assistant Chatbot with LangSmith Integration
 
 This script implements a Retrieval-Augmented Generation (RAG) chatbot for onboarding using LangChain, OpenAI, and prompt engineering.
+Enhanced with LangSmith tracing for debugging and monitoring.
 
 Key Concepts Utilized:
 - Prompt Engineering: Custom prompt template to guide LLM responses.
 - Retrieval-Augmented Generation (RAG): Retrieves relevant onboarding docs for context.
 - LangChain: Orchestrates the workflow between retrieval and LLM.
+- LangSmith: Provides observability and debugging for the RAG pipeline.
 
 All major functions and classes are documented with docstrings for clarity and maintainability.
 """
@@ -17,11 +19,14 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
+from langsmith import traceable
 from auth import app_startup
 from rag_pipeline import setup_rag_pipeline
 from log_utils import debug_log, output_log
 from config import DOC_DIRECTORIES
 
+# Load environment variables early
+load_dotenv()
 
 # --- Authenticate and refresh Vyaguta access token at startup ---
 debug_log("Starting authentication (app_startup)")
@@ -43,7 +48,6 @@ def load_api_key() -> str:
         str: The OpenAI API key.
     """
     debug_log("Loading OpenAI API key")
-    load_dotenv()
     key = os.getenv("OPENAI_API_KEY")
     debug_log("Loaded OpenAI API key")
     return key
@@ -123,9 +127,10 @@ def get_llm(api_key: str):
 llm = get_llm(OPENAI_API_KEY)
 
 
+@traceable(name="vyaguta_rag_chain")
 def build_qa_chain(llm, retriever, prompt):
     """
-    Builds the RetrievalQA chain using LangChain for RAG.
+    Builds the RetrievalQA chain using LangChain for RAG with LangSmith tracing.
 
     Args:
         llm: The language model instance.
@@ -149,11 +154,12 @@ def build_qa_chain(llm, retriever, prompt):
 qa_chain = build_qa_chain(llm, retriever, prompt)
 
 
+@traceable(name="vyaguta_main_chat")
 def main():
     """
-    Runs the Vyaguta Assistant Chatbot in a terminal chat loop.
+    Runs the Vyaguta Assistant Chatbot in a terminal chat loop with LangSmith tracking.
     """
-    debug_log("Entering main chat loop")
+    debug_log("Entering main chat loop with LangSmith tracking")
     import sys
 
     try:
@@ -169,17 +175,18 @@ def main():
             return text
         return color + text + Style.RESET_ALL
 
-    title = "Vyaguta Assistant Chatbot (type 'exit' to quit)"
+    title = "Vyaguta Assistant Chatbot with LangSmith Tracking (type 'exit' to quit)"
+    subtitle = "Type 'debug' to show source info"
     border = "=" * len(title)
     print(color_text(border, Fore.CYAN) if COLORAMA else border)
     print(color_text(title, Fore.CYAN + Style.BRIGHT) if COLORAMA else title)
+    print(color_text(subtitle, Fore.YELLOW) if COLORAMA else subtitle)
     print(color_text(border, Fore.CYAN) if COLORAMA else border)
-
-    # people_data is already loaded and indexed for RAG at startup
 
     # --- CONTEXT WINDOW IMPLEMENTATION ---
     conversation_history = []  # List of (user, assistant) tuples
     max_history = 3  # Number of previous turns to remember
+    debug_mode = False  # Track if user wants detailed analysis
 
     while True:
         user_prompt = (
@@ -190,8 +197,18 @@ def main():
         debug_log("Waiting for user input")
         question = input(user_prompt)
         debug_log(f"User input: {question}")
+
         if question.strip().lower() == "exit":
             break
+        elif question.strip().lower() == "debug":
+            debug_mode = not debug_mode
+            status = "enabled" if debug_mode else "disabled"
+            print(
+                color_text(f"\n🔧 Debug mode {status}", Fore.MAGENTA)
+                if COLORAMA
+                else f"\n🔧 Debug mode {status}"
+            )
+            continue
 
         # Build conversation context window
         history_text = ""
@@ -200,10 +217,31 @@ def main():
         # Add the current question
         full_query = f"{history_text}User: {question}"
 
-        debug_log("Invoking QA chain with context window")
+        debug_log("Invoking QA chain with LangSmith tracking")
         result = qa_chain.invoke({"query": full_query})
         debug_log("QA chain invocation complete")
         answer = result["result"]
+
+        # Show debug info if enabled
+        if debug_mode:
+            source_docs = result.get("source_documents", [])
+            if source_docs:
+                print(
+                    color_text(
+                        f"\n🔍 Retrieved {len(source_docs)} documents", Fore.CYAN
+                    )
+                    if COLORAMA
+                    else f"\n🔍 Retrieved {len(source_docs)} documents"
+                )
+                for i, doc in enumerate(source_docs[:3], 1):  # Show top 3
+                    source = doc.metadata.get("source", "Unknown")
+                    preview = (
+                        doc.page_content[:100] + "..."
+                        if len(doc.page_content) > 100
+                        else doc.page_content
+                    )
+                    print(f"  {i}. {source}: {preview}")
+
         unsure_phrases = [
             "I'm not sure about that based on the current information",
             "I am not sure",
@@ -213,17 +251,6 @@ def main():
             "recommend visiting the official",
         ]
 
-        # ---
-        # RAG-ONLY MODE (restrict to documentation):
-        # Uncomment the following block to restrict answers to documentation only (no AI fallback):
-        # if any(phrase in answer for phrase in unsure_phrases):
-        #     context = result.get("context", "")
-        #     if context:
-        #         answer += (
-        #             "\n\n---\nMost relevant documentation section:\n" + context.strip()
-        #         )
-
-        # ---
         # RAG + AI FALLBACK MODE (default):
         if any(phrase in answer for phrase in unsure_phrases):
             # Show the most relevant context chunk verbatim for transparency
@@ -245,7 +272,7 @@ Answer:
                 try:
                     general_answer = general_llm.invoke(general_prompt)
                     if general_answer and not any(
-                        phrase in general_answer for phrase in unsure_phrases
+                        phrase in str(general_answer) for phrase in unsure_phrases
                     ):
                         # Ensure answer is a string (handle AIMessage or other types)
                         if hasattr(general_answer, "content"):
@@ -255,7 +282,6 @@ Answer:
                 except Exception:
                     pass
 
-        # ---
         # Show sources for every answer (with debug info)
         source_docs = result.get("source_documents", [])
         debug_log(f"source_documents: {source_docs}")
@@ -267,6 +293,7 @@ Answer:
                 # Normalize to top-level folder (docs, docs-api, docs-confluence, etc.)
                 src_folder = src.split("/")[0]
                 sources.add(src_folder)
+
         env = os.getenv("ENV", "local").lower()
         if env != "production":
             if sources:
