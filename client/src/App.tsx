@@ -1,17 +1,9 @@
-/**
- * Main Application Component
- *
- * Clean separation of concerns using custom hooks and utilities.
- */
-
 import { useState, useCallback } from "react";
-import { Sidebar } from "./components/Sidebar";
-import { ChatContainer } from "./components/ChatContainer";
+import { Sidebar, ChatContainer } from "./components";
 import { useConversations, useQuickQuestions } from "./hooks";
 import { exportChatAsJson, countMessagesByRole } from "./utils";
 
 function App() {
-  // Conversation management
   const {
     conversations,
     activeConversation,
@@ -27,26 +19,21 @@ function App() {
     getFilteredMessages,
   } = useConversations();
 
-  // Quick questions
   const { quickQuestions, getSurpriseQuestion } = useQuickQuestions();
 
-  // UI state
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Toggle sidebar
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
   }, []);
 
-  // Export current chat
   const handleExportChat = useCallback(() => {
     if (activeConversation) {
       exportChatAsJson(activeConversation);
     }
   }, [activeConversation]);
 
-  // Handle surprise question
   const handleSurprise = useCallback(async () => {
     const question = await getSurpriseQuestion(messages.length);
     if (question) {
@@ -54,15 +41,14 @@ function App() {
     }
   }, [getSurpriseQuestion, messages.length, sendMessage]);
 
-  // Filtered messages based on search
   const filteredMessages = getFilteredMessages(searchTerm);
 
-  // Message counts
+  // TODO: make the enums for the role
   const userMessageCount = countMessagesByRole(messages, "user");
   const assistantMessageCount = countMessagesByRole(messages, "assistant");
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <>
       <Sidebar
         isOpen={sidebarOpen}
         onToggle={toggleSidebar}
@@ -92,7 +78,7 @@ function App() {
         sidebarOpen={sidebarOpen}
         onToggleSidebar={toggleSidebar}
       />
-    </div>
+    </>
   );
 }
 

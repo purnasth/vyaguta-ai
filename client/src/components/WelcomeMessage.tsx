@@ -1,56 +1,58 @@
+import { TbBulb } from "react-icons/tb";
 import { WELCOME, APP, IMAGES, ALT_TEXT, CHAT_INPUT } from "../constants";
 
 export function WelcomeMessage() {
   return (
-    <div className="flex gap-3 animate-fade-in">
-      <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-vyaguta-secondary">
+    <div className="flex gap-3 mt-24 animate-fade-in text-sm">
+      <div className="flex-shrink-0 size-10 rounded-full overflow-hidden border border-white/50 shadow">
         <img
           src={IMAGES.APP_AVATAR}
           alt={ALT_TEXT.APP_LOGO}
-          className="w-full h-full object-cover"
+          className="size-full object-cover"
+          draggable={false}
         />
       </div>
-      <div className="max-w-[80%] lg:max-w-[70%]">
-        <div className="assistant-bubble px-6 py-5">
-          <div className="space-y-4">
+      <div>
+        <div className="assistant-bubble">
+          <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <span className="text-2xl animate-wave">{WELCOME.GREETING}</span>
-              <span className="text-lg">
-                {WELCOME.TITLE}{" "}
-                <span className="gradient-text font-bold">{APP.NAME}</span>{" "}
+              <span className="animate-wave">{WELCOME.GREETING}</span>
+              <span>
+                {WELCOME.TITLE}&nbsp;
+                <span className="gradient-text">{APP.NAME}</span>&nbsp;
                 {WELCOME.SUBTITLE}
               </span>
             </div>
 
-            <p className="text-gray-300 leading-relaxed">
-              {WELCOME.DESCRIPTION}
-            </p>
+            <p className="leading-relaxed">{WELCOME.DESCRIPTION}</p>
 
             <div>
-              <p className="text-vyaguta-primary font-medium mb-2">
+              <p className="mt-12 text-vyaguta-primary font-medium mb-2">
                 {WELCOME.ASK_ABOUT}
               </p>
-              <ul className="space-y-2 text-gray-300">
+              <ul className="space-y-1">
                 {WELCOME.FEATURES.map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2">
-                    <span>{feature.icon}</span>
-                    <span>{feature.text}</span>
+                  <li key={index} className="flex items-center gap-2 ml-2">
+                    <span className="size-1.5 border border-white rounded-full"></span>
+                    {feature.text}
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white/5 rounded-lg px-4 py-3 border border-white/10">
-              <span className="text-xl mr-2">{WELCOME.TIP_PREFIX}</span>
-              <span className="text-gray-300">
-                {WELCOME.TIP_TEXT}{" "}
+            <div className="bg-white/5 w-fit !mt-8 rounded-lg px-4 py-3 border border-white/10">
+              <TbBulb className="inline-block mr-2 align-middle" />
+              <span>
+                {WELCOME.TIP_TEXT}&nbsp;
                 <span className="text-vyaguta-primary font-medium">
                   {CHAT_INPUT.QUICK_QUESTIONS}
-                </span>{" "}
-                {WELCOME.TIP_OR}{" "}
+                </span>
+                &nbsp;
+                {WELCOME.TIP_OR}&nbsp;
                 <span className="text-vyaguta-secondary font-medium">
                   {CHAT_INPUT.SURPRISE_ME}
-                </span>{" "}
+                </span>
+                &nbsp;
                 {WELCOME.TIP_SUFFIX}
               </span>
             </div>

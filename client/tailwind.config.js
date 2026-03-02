@@ -6,6 +6,10 @@ export default {
       fontFamily: {
         tomato: ["Tomato Grotesk", "Syne", "sans-serif"],
       },
+      fontSize: {
+        xxs: "0.625rem", // 10px
+        inherit: "inherit",
+      },
       colors: {
         primary: {
           50: "#eff6ff",
@@ -19,6 +23,7 @@ export default {
           800: "#1e40af",
           900: "#1e3a8a",
         },
+        light: "#fff",
         vyaguta: {
           primary: "#3a8dff",
           secondary: "#ff75c2",

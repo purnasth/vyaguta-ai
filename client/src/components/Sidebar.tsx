@@ -1,25 +1,21 @@
+import { FaGithub } from "react-icons/fa";
 import {
-  Search,
-  Trash2,
-  Download,
-  ExternalLink,
-  Github,
-  ChevronLeft,
-  Link2,
-  MessageSquarePlus,
-  GripVertical,
-} from "lucide-react";
+  TbPlus,
+  TbTrash,
+  TbSearch,
+  TbDownload,
+  TbChevronLeft,
+  TbExternalLink,
+  TbGripVertical,
+} from "react-icons/tb";
+
 import type { QuickQuestion, ChatSession } from "../types";
+
+import { APP, SIDEBAR, URLS, UI, STORAGE_KEYS } from "../constants";
+
+import { Logo } from "./ui/Logo";
 import { ConversationList } from "./ConversationList";
-import {
-  APP,
-  SIDEBAR,
-  URLS,
-  IMAGES,
-  ALT_TEXT,
-  UI,
-  STORAGE_KEYS,
-} from "../constants";
+
 import { useResizable } from "../hooks";
 
 interface SidebarProps {
@@ -66,16 +62,17 @@ export function Sidebar({
   return (
     <aside
       style={{ width: isOpen ? width : 0 }}
-      className={`relative flex-shrink-0 h-screen bg-vyaguta-darker border-r border-white/10 flex flex-col transition-[width] duration-300 overflow-hidden ${isResizing ? "transition-none" : ""}`}
+      className={`fixed z-50 flex-shrink-0 h-screen backdrop-blur border-r border-white/10 flex flex-col transition-[width] duration-300 overflow-hidden ${isResizing ? "transition-none" : ""}`}
     >
       {/* Resize Handle */}
+      {/* TODO: update the colors here */}
       {isOpen && (
         <div
           onMouseDown={startResize}
           className={`absolute right-0 top-0 bottom-0 w-1 cursor-ew-resize group hover:bg-vyaguta-primary/50 transition-colors z-50 ${isResizing ? "bg-vyaguta-primary" : ""}`}
         >
           <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <GripVertical className="w-4 h-4 text-gray-400" />
+            <TbGripVertical />
           </div>
         </div>
       )}
@@ -86,34 +83,24 @@ export function Sidebar({
         {/* Header */}
         <div className="p-4 border-b border-white/10">
           <div className="flex items-center justify-between mb-4">
-            <a
-              href="/"
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-            >
-              <img
-                src={IMAGES.APP_AVATAR}
-                alt={ALT_TEXT.APP_LOGO}
-                className="w-10 h-10 rounded-full"
-              />
-              <h2 className="font-bold text-lg gradient-text">{APP.NAME}</h2>
-            </a>
+            <Logo />
             <button
               onClick={onToggle}
               className="p-2 hover:bg-white/10 rounded-lg transition-colors"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <TbChevronLeft className="text-xl" />
             </button>
           </div>
 
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+            <TbSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
             <input
               type="text"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={SIDEBAR.SEARCH_PLACEHOLDER}
-              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-vyaguta-primary/50 focus:border-vyaguta-primary/50 transition-all"
+              className="w-full pl-9 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-vyaguta-primary/50 focus:border-vyaguta-primary/50 transition-all"
             />
           </div>
         </div>
@@ -122,10 +109,10 @@ export function Sidebar({
         <div className="p-4 space-y-2">
           <button
             onClick={onNewChat}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-vyaguta-primary to-vyaguta-secondary hover:opacity-90 rounded-lg transition-all font-medium"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-vyaguta-primary to-vyaguta-secondary hover:opacity-90 rounded-lg transition-all text-sm"
           >
-            <MessageSquarePlus className="w-4 h-4" />
-            <span>{SIDEBAR.NEW_CHAT}</span>
+            <TbPlus />
+            {SIDEBAR.NEW_CHAT}
           </button>
 
           <div className="flex gap-2">
@@ -133,15 +120,15 @@ export function Sidebar({
               onClick={onClearChat}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-sm"
             >
-              <Trash2 className="w-4 h-4" />
-              <span>{SIDEBAR.CLEAR}</span>
+              <TbTrash />
+              {SIDEBAR.CLEAR}
             </button>
             <button
               onClick={onExportChat}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-sm"
             >
-              <Download className="w-4 h-4" />
-              <span>{SIDEBAR.EXPORT}</span>
+              <TbDownload />
+              {SIDEBAR.EXPORT}
             </button>
           </div>
         </div>
@@ -149,7 +136,7 @@ export function Sidebar({
         {/* Conversations List */}
         <div className="px-4 pb-2">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+            <h3 className="text-xs text-gray-400 uppercase tracking-wider">
               {SIDEBAR.CONVERSATIONS}
             </h3>
             <span className="text-xs text-gray-500">
@@ -170,7 +157,6 @@ export function Sidebar({
         {/* Quick Links */}
         <div className="px-4 py-3 border-t border-white/10">
           <div className="flex items-center gap-2 mb-2">
-            <Link2 className="w-3 h-3 text-vyaguta-secondary" />
             <h3 className="font-medium text-xs">{SIDEBAR.QUICK_LINKS}</h3>
           </div>
           <div className="flex flex-wrap gap-2 text-xs">
@@ -180,7 +166,7 @@ export function Sidebar({
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
             >
-              <ExternalLink className="w-3 h-3" />
+              <TbExternalLink />
               <span>{SIDEBAR.PORTAL}</span>
             </a>
             <span className="text-gray-600">•</span>
@@ -190,7 +176,7 @@ export function Sidebar({
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
             >
-              <ExternalLink className="w-3 h-3" />
+              <TbExternalLink />
               <span>{SIDEBAR.WIKI}</span>
             </a>
             <span className="text-gray-600">•</span>
@@ -200,7 +186,7 @@ export function Sidebar({
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
             >
-              <ExternalLink className="w-3 h-3" />
+              <TbExternalLink />
               <span>{SIDEBAR.HELP}</span>
             </a>
           </div>
@@ -208,17 +194,17 @@ export function Sidebar({
 
         {/* Footer */}
         <div className="p-4 border-t border-white/10">
-          <div className="text-center text-xs text-gray-500">
+          <div className="text-xs text-gray-500">
             <p>{APP.COPYRIGHT}</p>
-            <div className="flex items-center justify-center gap-3 mt-2">
-              <span className="text-gray-600">{APP.VERSION}</span>
+            <div className="flex items-center justify-start gap-3 mt-2">
+              <span className="text-gray-500">{APP.VERSION}</span>
               <a
                 href={URLS.GITHUB_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-gray-500 hover:text-white transition-colors"
               >
-                <Github className="w-3 h-3" />
+                <FaGithub />
                 <span>{SIDEBAR.GITHUB}</span>
               </a>
             </div>

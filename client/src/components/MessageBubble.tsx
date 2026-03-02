@@ -1,6 +1,7 @@
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Copy, Check } from "lucide-react";
-import { useState } from "react";
+
 import type { Message } from "../types";
 import { MESSAGE, IMAGES, ALT_TEXT, UI } from "../constants";
 
@@ -17,6 +18,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     setTimeout(() => setCopied(false), UI.COPY_FEEDBACK_TIMEOUT);
   };
 
+  // TODO: use the enums for the role instead of string literals
   if (message.role === "user") {
     return (
       <div className="flex justify-end gap-3 animate-fade-in">
@@ -40,7 +42,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   }
 
   return (
-    <div className="flex gap-3 animate-slide-up">
+    <div className="flex gap-3 animate-slide-up mt-2 mb-10">
       <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border-2 border-vyaguta-secondary">
         <img
           src={IMAGES.APP_AVATAR}
@@ -48,9 +50,9 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="max-w-[80%] lg:max-w-[70%]">
-        <div className="assistant-bubble px-4 py-3">
-          <div className="markdown-content text-gray-200">
+      <div className="max-w-[80%] lg:max-w-[70%] px-2">
+        <div className="assistant-bubble">
+          <div className="markdown-content">
             <ReactMarkdown>{message.content}</ReactMarkdown>
           </div>
         </div>
