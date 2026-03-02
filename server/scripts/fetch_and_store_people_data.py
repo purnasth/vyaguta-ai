@@ -4,10 +4,9 @@ import time
 from dotenv import load_dotenv
 
 import requests
-from config import API_PEOPLE_URL
-from auth import app_startup
-from log_utils import debug_log, output_log
-from config import PEOPLE_MD_DIR
+from server.core.config import API_PEOPLE_URL, PEOPLE_MD_DIR
+from server.core.auth import app_startup
+from server.core.log_utils import debug_log, output_log
 
 
 load_dotenv()
@@ -55,7 +54,7 @@ def fetch_all_people():
 
 
 def fetch_person_details_by_id(person_id):
-    from config import VYAGUTA_BASE_URL
+    from server.core.config import VYAGUTA_BASE_URL
 
     token = os.getenv("VYAGUTA_ACCESS_TOKEN")
     headers = {"Authorization": f"Bearer {token}"} if token else {}

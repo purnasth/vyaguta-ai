@@ -5,7 +5,7 @@
 import os
 import glob
 from langchain_core.documents import Document
-from config import PEOPLE_MD_DIR
+from .config import PEOPLE_MD_DIR
 
 
 def load_people_markdown(directory=PEOPLE_MD_DIR):

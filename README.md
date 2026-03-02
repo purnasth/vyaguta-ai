@@ -4,7 +4,6 @@ Vyaguta AI Assistant is an intelligent chatbot designed to help Leapfrog employe
 
 <img width="2566" height="1606" alt="53144_3aa9f665ec38d2b2c16cae4689619ddd5dd0d3b6d3f04f4d9795f087b25a6c6c" src="https://github.com/user-attachments/assets/f52c3cfd-0cdb-46bf-a23b-bb5261c68f99" />
 
-
 ## What is Vyaguta AI Assistant?
 
 Vyaguta AI Assistant is your smart companion for all things Vyaguta and Leapfrog. It can:
@@ -119,9 +118,112 @@ For a detailed technical breakdown and architecture, see `/guides/workflow-expla
 - **RAG:** Retrieval-Augmented Generation for context-aware answers
 - **LangChain:** For managing the workflow and integrating components
 - **OpenAI:** For semantic search and document retrieval
-- **Data Storage:** FAISS vector database/ chromaDB for fast similarity search
-- **Frontend:** Streamlit for modern, interactive UI
-- **Backend:** LangChain for orchestration, OpenAI for LLMs
+- **Data Storage:** ChromaDB vector database for fast similarity search
+- **Frontend Options:**
+  - **Streamlit** - Quick prototyping with `chatbot_gui.py`
+  - **React + TypeScript + Tailwind** - Production-ready custom UI in `client/`
+- **Backend:**
+  - **FastAPI** - REST API server in `server/`
+  - **LangChain** - For RAG orchestration
+
+---
+
+## Project Structure
+
+```
+vyaguta-ai/
+├── client/                  # React + TypeScript + Tailwind frontend
+│   ├── src/
+│   │   ├── components/      # UI components
+│   │   ├── services/        # API services
+│   │   ├── types/           # TypeScript types
+│   │   └── App.tsx          # Main application
+│   ├── package.json
+│   └── vite.config.ts
+├── server/                  # FastAPI backend
+│   ├── api.py               # REST API endpoints
+│   └── run.py               # Server runner
+├── docs/                    # Documentation files
+├── docs-api/                # API documentation
+├── docs-confluence/         # Confluence documentation
+├── chroma_db/               # Vector database
+├── chatbot_gui.py           # Streamlit UI (legacy)
+├── main.py                  # Core RAG logic
+├── rag_pipeline.py          # RAG pipeline setup
+├── config.py                # Configuration
+└── requirements.txt         # Python dependencies
+```
+
+---
+
+## Quick Start
+
+### Option 1: React + FastAPI (Recommended)
+
+**1. Install Python dependencies:**
+
+```bash
+pip install -r requirements.txt
+```
+
+**2. Start the FastAPI backend:**
+
+```bash
+python -m server.run
+# Or: cd server && python run.py
+```
+
+The API will be available at `http://localhost:8000`
+
+**3. Install and start the React frontend:**
+
+```bash
+cd client
+pnpm install
+pnpm dev
+```
+
+The UI will be available at `http://localhost:5173`
+
+### Option 2: Streamlit UI (Legacy)
+
+```bash
+pip install -r requirements.txt
+streamlit run chatbot_gui.py
+```
+
+> **Note:** This project uses pnpm as the package manager for the frontend.
+
+---
+
+## API Endpoints
+
+| Endpoint               | Method | Description                      |
+| ---------------------- | ------ | -------------------------------- |
+| `/api/health`          | GET    | Health check                     |
+| `/api/chat`            | POST   | Send message and get AI response |
+| `/api/quick-questions` | GET    | Get predefined quick questions   |
+| `/api/surprise`        | GET    | Get a random surprise question   |
+
+### Example: Send a message
+
+```bash
+curl -X POST http://localhost:8000/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "What is Vyaguta?"}'
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+VYAGUTA_REFRESH_TOKEN=your_vyaguta_refresh_token
+ENV=development
+```
 
 ---
 

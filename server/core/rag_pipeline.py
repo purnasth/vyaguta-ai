@@ -19,8 +19,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 
-from log_utils import debug_log, output_log
-from config import DOC_DIRECTORIES
+from .log_utils import debug_log, output_log
+from .config import DOC_DIRECTORIES
 
 
 load_dotenv()
@@ -69,7 +69,7 @@ def chunk_documents(docs, chunk_size=1000, chunk_overlap=200, max_chars=2000):
     Chunks all documents using RecursiveCharacterTextSplitter for optimal embedding.
     Uses a conservative chunk size and overlap to keep tables and context together, but ensures no chunk exceeds max_chars.
     """
-    from config import CHUNK_SIZE, CHUNK_OVERLAP, MAX_CHARS
+    from .config import CHUNK_SIZE, CHUNK_OVERLAP, MAX_CHARS
 
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=CHUNK_SIZE, chunk_overlap=CHUNK_OVERLAP
@@ -106,7 +106,7 @@ def build_chroma_vectorstore(chunks, persist_directory=CHROMA_DIR):
     embeddings = OpenAIEmbeddings()
     from math import ceil
 
-    from config import BATCH_SIZE
+    from .config import BATCH_SIZE
 
     batch_size = BATCH_SIZE
     all_vectorstore = None
@@ -126,7 +126,7 @@ def get_chroma_retriever(vectorstore, k=10):
     """
     Returns a retriever from the Chroma vector store, retrieving up to k chunks.
     """
-    from config import RETRIEVER_K
+    from .config import RETRIEVER_K
 
     return vectorstore.as_retriever(search_kwargs={"k": RETRIEVER_K})
 

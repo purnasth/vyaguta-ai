@@ -1,6 +1,6 @@
-from rag_pipeline import refresh_rag_pipeline
-from log_utils import debug_log, output_log
-from config import DOC_DIRECTORIES
+from server.core.rag_pipeline import refresh_rag_pipeline
+from server.core.log_utils import debug_log, output_log
+from server.core.config import DOC_DIRECTORIES
 
 
 def main():
