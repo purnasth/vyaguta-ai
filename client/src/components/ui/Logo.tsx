@@ -1,19 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { ALT_TEXT, APP, IMAGES } from "@/constants";
+import { APP } from '@/constants';
+
+import { Avatar } from './Avatar';
 
 export const Logo = () => {
   return (
-    <Link
-      to="/"
-      className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-    >
-      <img
-        src={IMAGES.APP_AVATAR}
-        alt={ALT_TEXT.APP_LOGO}
-        className="w-10 h-10 rounded-full"
-      />
-      <h2 className="gradient-text">{APP.NAME}</h2>
+    <Link to="/" className="flex items-center gap-3">
+      <Avatar />
+      <h2 className="text-lg font-light">{APP.NAME}</h2>
     </Link>
   );
 };

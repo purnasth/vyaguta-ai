@@ -1,218 +1,90 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import './assets/css/fonts.css';
 
-/* TODO: use tailwindcss not the custom CSS */
+@import 'tailwindcss';
 
-/* Tomato Grotesk Font Face */
-@font-face {
-  font-family: "Tomato Grotesk";
-  src: url("./assets/fonts/tomato-grotesk/TomatoGrotesk-Regular.woff2")
-    format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+@config '../tailwind.config.js';
+
+@theme {
+  --font-tomato: 'Tomato Grotesk', sans-serif;
+  --font-syne: 'Syne', sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+  --color-dark: #070b18;
+  --color-light: #fff;
+  --color-vyaguta-green: #2ecc71;
+  --color-vyaguta-blue: #102b7b;
+
+  --text-xxs: 0.625rem;
 }
 
-@font-face {
-  font-family: "Tomato Grotesk";
-  src: url("./assets/fonts/tomato-grotesk/TomatoGrotesk-SemiBold.woff2")
-    format("woff2");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Tomato Grotesk";
-  src: url("./assets/fonts/tomato-grotesk/TomatoGrotesk-ExtraBold.woff2")
-    format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Tomato Grotesk";
-  src: url("./assets/fonts/tomato-grotesk/TomatoGrotesk-Black.woff2")
-    format("woff2");
-  font-weight: 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-:root {
-  --vyaguta-primary: #3a8dff;
-  --vyaguta-secondary: #ff75c2;
-}
-
-* {
-  letter-spacing: 0.02em;
-  /* @apply !text-sm; */
-}
-
-body {
-  background: linear-gradient(90deg, rgb(1, 0, 24) 0%, rgb(6, 6, 30) 35%);
-  color: #e2e8f0;
-
-  @apply font-tomato;
-}
-
-.gradient-text {
-  background: linear-gradient(
-    135deg,
-    var(--vyaguta-primary) 0%,
-    var(--vyaguta-secondary) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Message bubbles */
-.user-bubble {
-  background: linear-gradient(135deg, var(--vyaguta-primary) 0%, #2563eb 100%);
-  border-radius: 20px 20px 4px 20px;
-}
-
-.assistant-bubble {
-  /* background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px 20px 20px 4px; */
-  background: transparent;
-}
-
-/* Typing animation */
-.typing-dot {
-  animation: bounce-dot 1.4s ease-in-out infinite;
-}
-
-.typing-dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing-dot:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce-dot {
-  0%,
-  80%,
-  100% {
-    transform: translateY(0);
+@layer components {
+  /* TODO: check and update the transitions of all */
+  * {
+    @apply font-syne tracking-wide transition-all duration-300 ease-initial;
   }
-  40% {
-    transform: translateY(-8px);
+  body {
+    @apply text-light bg-vyaguta-bg bg-dark h-screen overflow-hidden;
   }
-}
 
-/* Glow effect */
-.glow-effect {
-  box-shadow: 0 0 20px rgba(58, 141, 255, 0.3);
-}
-
-/* Markdown content styling */
-.markdown-content h1,
-.markdown-content h2,
-.markdown-content h3,
-.markdown-content h4 {
-  font-weight: 600;
-  margin-top: 1rem;
-  margin-bottom: 0.5rem;
-}
-
-.markdown-content p {
-  margin-bottom: 0.75rem;
-  line-height: 1.6;
-}
-
-.markdown-content ul,
-.markdown-content ol {
-  margin-left: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.markdown-content li {
-  margin-bottom: 0.25rem;
-}
-
-.markdown-content code {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 0.125rem 0.375rem;
-  border-radius: 4px;
-  font-family: "Fira Code", monospace;
-  font-size: 0.875em;
-}
-
-.markdown-content pre {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 1rem;
-  border-radius: 8px;
-  overflow-x: auto;
-  margin-bottom: 0.75rem;
-}
-
-.markdown-content pre code {
-  background: transparent;
-  padding: 0;
-}
-
-.markdown-content a {
-  color: var(--vyaguta-primary);
-  text-decoration: underline;
-}
-
-.markdown-content a:hover {
-  color: var(--vyaguta-secondary);
-}
-
-/* Wave animation for welcome emoji */
-.animate-wave {
-  display: inline-block;
-  animation: wave 2.5s ease-in-out infinite;
-  transform-origin: 70% 70%;
-}
-
-@keyframes wave {
-  0%,
-  100% {
-    transform: rotate(0deg);
+  button {
+    @apply cursor-pointer;
   }
-  10% {
-    transform: rotate(14deg);
-  }
-  20% {
-    transform: rotate(-8deg);
-  }
-  30% {
-    transform: rotate(14deg);
-  }
-  40% {
-    transform: rotate(-4deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-  60%,
-  100% {
-    transform: rotate(0deg);
-  }
-}
 
-.loading-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(58, 141, 255, 0.4);
+  code,
+  code span {
+    @apply font-code! text-vyaguta-green;
   }
-  50% {
-    box-shadow: 0 0 40px rgba(58, 141, 255, 0.8);
-  }
-}
 
-.chat-container {
-  box-shadow: inset 0px 0px 5px 2px rgba(255, 255, 255, 0.25);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold;
+  }
+
+  label,
+  a,
+  input,
+  textarea,
+  button {
+    @apply font-normal;
+  }
+
+  strong,
+  b {
+    @apply font-medium;
+  }
+
+  p,
+  span,
+  ul,
+  li,
+  input::placeholder {
+    @apply font-light;
+  }
+
+  ol {
+    @apply list-outside list-decimal leading-relaxed;
+  }
+
+  ul {
+    @apply list-outside list-disc leading-relaxed;
+  }
+
+  /* .chat-container p {
+    @apply my-4 leading-snug last:mb-0;
+  } */
+
+  .chat-container ul {
+    @apply mb-4 leading-normal;
+  }
+  .chat-container p {
+    @apply mb-4;
+  }
+
+  .gradient-text {
+    @apply bg-vyaguta-gradient-loading animate-gradient-shift bg-size-[300%_300%] bg-clip-text text-transparent;
+  }
 }

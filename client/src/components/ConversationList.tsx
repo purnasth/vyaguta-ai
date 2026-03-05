@@ -1,11 +1,11 @@
-import { useState, useCallback } from "react";
-import { LuMessageSquareShare } from "react-icons/lu";
-import { TbCheck, TbPencil, TbTrash, TbX } from "react-icons/tb";
+import { useState, useCallback } from 'react';
+import { LuMessageSquareShare } from 'react-icons/lu';
+import { TbCheck, TbPencil, TbTrash, TbX } from 'react-icons/tb';
 
-import { CONVERSATION } from "../constants";
-import type { ChatSession } from "../types";
+import { CONVERSATION } from '../constants';
+import type { ChatSession } from '../types';
 
-import { formatRelativeDate } from "../utils";
+import { formatRelativeDate } from '../utils';
 
 interface ConversationListProps {
   conversations: ChatSession[];
@@ -23,7 +23,7 @@ export function ConversationList({
   onRenameConversation,
 }: ConversationListProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [editName, setEditName] = useState("");
+  const [editName, setEditName] = useState('');
 
   const startEditing = useCallback((conversation: ChatSession) => {
     setEditingId(conversation.id);
@@ -42,14 +42,14 @@ export function ConversationList({
 
   const cancelEdit = useCallback(() => {
     setEditingId(null);
-    setEditName("");
+    setEditName('');
   }, []);
 
   if (conversations.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-500">
-        <LuMessageSquareShare className="text-4xl mx-auto mb-2 opacity-50" />
-        <p className="text-xs max-w-36 mx-auto">
+      <div className="py-8 text-center text-gray-400">
+        <LuMessageSquareShare className="mx-auto mb-2 text-5xl opacity-50" />
+        <p className="mx-auto max-w-36 text-xs">
           {CONVERSATION.NO_CONVERSATIONS}. {CONVERSATION.START_NEW}
         </p>
       </div>
@@ -61,32 +61,33 @@ export function ConversationList({
       {conversations.map((conversation) => (
         <div
           key={conversation.id}
-          className={`group relative flex items-center gap-2 px-2 py-2 rounded-lg cursor-pointer transition-all ${
+          className={`group relative flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 ${
             activeConversationId === conversation.id
-              ? "bg-vyaguta-primary/20 border border-vyaguta-primary/30"
-              : "hover:bg-white/5 border border-transparent"
+              ? 'border-white/10 bg-white/5'
+              : 'border-transparent opacity-60 hover:bg-white/5 hover:opacity-90'
           }`}
           onClick={() => onSelectConversation(conversation.id)}
         >
           <LuMessageSquareShare
-            className={`text-lg flex-shrink-0 ${
+            className={`shrink-0 text-lg ${
               activeConversationId === conversation.id
-                ? "text-vyaguta-primary"
-                : "text-gray-500"
+                ? 'opacity-100'
+                : 'opacity-40'
             }`}
           />
 
           {editingId === conversation.id ? (
-            <div className="flex-1 flex items-center">
+            <div className="flex flex-1 items-center">
+              {/* TODO: work on validation and max chars */}
               <input
                 type="text"
                 value={editName}
                 onChange={(e) => setEditName(e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") saveEdit(conversation.id);
-                  if (e.key === "Escape") cancelEdit();
+                  if (e.key === 'Enter') saveEdit(conversation.id);
+                  if (e.key === 'Escape') cancelEdit();
                 }}
-                className="flex-1 bg-white/10 border border-white/20 rounded px-1 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-vyaguta-primary"
+                className="focus:ring-vyaguta-primary flex-1 rounded border border-white/20 bg-white/10 px-1 py-0.5 text-xs focus:ring-1 focus:ring-white/50 focus:outline-none"
                 autoFocus
                 onClick={(e) => e.stopPropagation()}
               />
@@ -95,7 +96,7 @@ export function ConversationList({
                   e.stopPropagation();
                   saveEdit(conversation.id);
                 }}
-                className="p-1 hover:bg-white/10 rounded"
+                className="rounded p-1 hover:bg-white/10"
               >
                 <TbCheck className="text-sm text-green-500" />
               </button>
@@ -104,30 +105,30 @@ export function ConversationList({
                   e.stopPropagation();
                   cancelEdit();
                 }}
-                className="p-1 hover:bg-white/10 rounded"
+                className="rounded p-1 hover:bg-white/10"
               >
                 <TbX className="text-sm text-red-500" />
               </button>
             </div>
           ) : (
             <>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-medium truncate">
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-medium">
                   {conversation.name}
                 </p>
-                <p className="text-xxs text-gray-500 truncate">
-                  {conversation.messages.length} {CONVERSATION.MESSAGES_LABEL} •{" "}
+                <p className="text-xxs truncate text-gray-500">
+                  {conversation.messages.length} {CONVERSATION.MESSAGES_LABEL} •{' '}
                   {formatRelativeDate(conversation.updatedAt)}
                 </p>
               </div>
 
-              <div className="hidden group-hover:flex items-center gap-1">
+              <div className="hidden items-center gap-1 group-hover:flex">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     startEditing(conversation);
                   }}
-                  className="p-1 hover:bg-white/10 rounded transition-colors"
+                  className="rounded p-1 transition-colors hover:bg-white/10"
                   title={CONVERSATION.RENAME}
                 >
                   <TbPencil className="text-sm text-gray-500" />
@@ -137,7 +138,7 @@ export function ConversationList({
                     e.stopPropagation();
                     onDeleteConversation(conversation.id);
                   }}
-                  className="p-1 hover:bg-white/10 rounded transition-colors"
+                  className="rounded p-1 transition-colors hover:bg-white/10"
                   title={CONVERSATION.DELETE}
                 >
                   <TbTrash className="text-sm text-red-500" />

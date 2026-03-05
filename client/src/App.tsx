@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
-import { Sidebar, ChatContainer } from "./components";
-import { useConversations, useQuickQuestions } from "./hooks";
-import { exportChatAsJson, countMessagesByRole } from "./utils";
+import { useState, useCallback } from 'react';
+import { Sidebar, ChatContainer } from './components';
+import { useConversations, useQuickQuestions } from './hooks';
+import { exportChatAsJson, countMessagesByRole } from './utils';
 
 function App() {
   const {
@@ -22,7 +22,7 @@ function App() {
   const { quickQuestions, getSurpriseQuestion } = useQuickQuestions();
 
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const toggleSidebar = useCallback(() => {
     setSidebarOpen((prev) => !prev);
@@ -44,8 +44,8 @@ function App() {
   const filteredMessages = getFilteredMessages(searchTerm);
 
   // TODO: make the enums for the role
-  const userMessageCount = countMessagesByRole(messages, "user");
-  const assistantMessageCount = countMessagesByRole(messages, "assistant");
+  const userMessageCount = countMessagesByRole(messages, 'user');
+  const assistantMessageCount = countMessagesByRole(messages, 'assistant');
 
   return (
     <>
@@ -76,7 +76,6 @@ function App() {
         onSurprise={handleSurprise}
         quickQuestions={quickQuestions}
         sidebarOpen={sidebarOpen}
-        onToggleSidebar={toggleSidebar}
       />
     </>
   );

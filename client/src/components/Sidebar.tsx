@@ -1,22 +1,23 @@
-import { FaGithub } from "react-icons/fa";
 import {
   TbPlus,
+  TbMenu2,
   TbTrash,
   TbSearch,
   TbDownload,
   TbChevronLeft,
   TbExternalLink,
-  TbGripVertical,
-} from "react-icons/tb";
+} from 'react-icons/tb';
+import { Link } from 'react-router-dom';
+import { FaGithub } from 'react-icons/fa';
 
-import type { QuickQuestion, ChatSession } from "../types";
+import type { QuickQuestion, ChatSession } from '../types';
 
-import { APP, SIDEBAR, URLS, UI, STORAGE_KEYS } from "../constants";
+import { APP, SIDEBAR, URLS, UI, STORAGE_KEYS } from '../constants';
 
-import { Logo } from "./ui/Logo";
-import { ConversationList } from "./ConversationList";
+import { Logo } from './ui/Logo';
+import { ConversationList } from './ConversationList';
 
-import { useResizable } from "../hooks";
+import { useResizable } from '../hooks';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -56,153 +57,150 @@ export function Sidebar({
     minWidth: UI.SIDEBAR_WIDTH_MIN,
     maxWidth: UI.SIDEBAR_WIDTH_MAX,
     defaultWidth: UI.SIDEBAR_WIDTH_DEFAULT,
-    storageKey: STORAGE_KEYS.SIDEBAR_STATE + "_width",
+    storageKey: STORAGE_KEYS.SIDEBAR_STATE + '_width',
   });
 
   return (
-    <aside
-      style={{ width: isOpen ? width : 0 }}
-      className={`fixed z-50 flex-shrink-0 h-screen backdrop-blur border-r border-white/10 flex flex-col transition-[width] duration-300 overflow-hidden ${isResizing ? "transition-none" : ""}`}
-    >
-      {/* Resize Handle */}
-      {/* TODO: update the colors here */}
-      {isOpen && (
-        <div
-          onMouseDown={startResize}
-          className={`absolute right-0 top-0 bottom-0 w-1 cursor-ew-resize group hover:bg-vyaguta-primary/50 transition-colors z-50 ${isResizing ? "bg-vyaguta-primary" : ""}`}
+    <>
+      {!isOpen && (
+        <button
+          onClick={onToggle}
+          className="fixed top-4 left-4 z-50 rounded-lg p-2 transition-colors hover:bg-white/10"
+          aria-label="Open sidebar"
         >
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <TbGripVertical />
-          </div>
-        </div>
+          <TbMenu2 className="text-xl" />
+        </button>
       )}
-      <div
-        className="flex-1 flex flex-col"
-        style={{ minWidth: UI.SIDEBAR_WIDTH_MIN }}
+
+      <aside
+        style={{ width: isOpen ? width : 0 }}
+        className={`fixed z-50 flex h-screen shrink-0 flex-col overflow-hidden overflow-y-auto border-r border-white/10 backdrop-blur ${isResizing ? 'transition-none' : ''}`}
       >
-        {/* Header */}
-        <div className="p-4 border-b border-white/10">
-          <div className="flex items-center justify-between mb-4">
+        {isOpen && (
+          <div
+            onMouseDown={startResize}
+            className={`group hover:bg-vyaguta-green absolute top-0 right-0 bottom-0 z-50 w-0.5 cursor-ew-resize transition-colors ${isResizing ? 'bg-vyaguta-green/25' : ''}`}
+          ></div>
+        )}
+        <div
+          className="flex flex-1 flex-col gap-6 p-4"
+          style={{ minWidth: UI.SIDEBAR_WIDTH_MIN }}
+        >
+          <div className="flex items-center justify-between">
             <Logo />
             <button
               onClick={onToggle}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+              className="rounded-lg bg-white/5 p-2 transition-colors hover:bg-white/10"
             >
               <TbChevronLeft className="text-xl" />
             </button>
           </div>
+          <div className="space-y-3">
+            <div className="relative">
+              <TbSearch className="absolute top-1/2 left-3 -translate-y-1/2 text-white" />
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => onSearchChange(e.target.value)}
+                placeholder={SIDEBAR.SEARCH_PLACEHOLDER}
+                className="bg-dark/10 w-full rounded-lg border border-white/5 py-3 pr-4 pl-9 text-sm placeholder-white focus:border-white/30 focus:outline-none"
+              />
+            </div>
 
-          {/* Search */}
-          <div className="relative">
-            <TbSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              placeholder={SIDEBAR.SEARCH_PLACEHOLDER}
-              className="w-full pl-9 pr-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-vyaguta-primary/50 focus:border-vyaguta-primary/50 transition-all"
+            <button
+              onClick={onNewChat}
+              className="bg-vyaguta-blue flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm hover:opacity-90"
+            >
+              <TbPlus />
+              {SIDEBAR.NEW_CHAT}
+            </button>
+
+            <div className="flex gap-2">
+              <button
+                onClick={onClearChat}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm transition-colors hover:bg-white/10"
+              >
+                <TbTrash />
+                {SIDEBAR.CLEAR}
+              </button>
+              <button
+                onClick={onExportChat}
+                className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-sm transition-colors hover:bg-white/10"
+              >
+                <TbDownload />
+                {SIDEBAR.EXPORT}
+              </button>
+            </div>
+          </div>
+
+          <hr className="border-white/10" />
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <h3 className="text-xs font-light tracking-wider text-gray-400 uppercase">
+                {SIDEBAR.CONVERSATIONS}
+              </h3>
+              <span className="text-xs text-gray-400">
+                {conversations.length}
+              </span>
+            </div>
+          </div>
+          <div className="max-h-[50vh] min-h-0 flex-1 overflow-y-auto">
+            <ConversationList
+              conversations={conversations}
+              activeConversationId={activeConversationId}
+              onSelectConversation={onSelectConversation}
+              onDeleteConversation={onDeleteConversation}
+              onRenameConversation={onRenameConversation}
             />
           </div>
-        </div>
 
-        {/* Actions */}
-        <div className="p-4 space-y-2">
-          <button
-            onClick={onNewChat}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-vyaguta-primary to-vyaguta-secondary hover:opacity-90 rounded-lg transition-all text-sm"
-          >
-            <TbPlus />
-            {SIDEBAR.NEW_CHAT}
-          </button>
+          <hr className="border-white/10" />
 
-          <div className="flex gap-2">
-            <button
-              onClick={onClearChat}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-sm"
-            >
-              <TbTrash />
-              {SIDEBAR.CLEAR}
-            </button>
-            <button
-              onClick={onExportChat}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-colors text-sm"
-            >
-              <TbDownload />
-              {SIDEBAR.EXPORT}
-            </button>
-          </div>
-        </div>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs font-medium">{SIDEBAR.QUICK_LINKS}</h3>
+              </div>
+              {/* TODO: map quick links */}
+              <div className="flex flex-wrap gap-3 text-xs">
+                <Link
+                  to={URLS.VYAGUTA_PORTAL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-white"
+                >
+                  <TbExternalLink />
+                  <span>{SIDEBAR.PORTAL}</span>
+                </Link>
+                <Link
+                  to={URLS.WIKI}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-white"
+                >
+                  <TbExternalLink />
+                  <span>{SIDEBAR.WIKI}</span>
+                </Link>
+                <Link
+                  to={URLS.SLACK_HELP}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-gray-400 transition-colors hover:text-white"
+                >
+                  <TbExternalLink />
+                  <span>{SIDEBAR.HELP}</span>
+                </Link>
+              </div>
+            </div>
 
-        {/* Conversations List */}
-        <div className="px-4 pb-2">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs text-gray-400 uppercase tracking-wider">
-              {SIDEBAR.CONVERSATIONS}
-            </h3>
-            <span className="text-xs text-gray-500">
-              {conversations.length}
-            </span>
-          </div>
-        </div>
-        <div className="flex-1 overflow-y-auto px-4 pb-4 min-h-0">
-          <ConversationList
-            conversations={conversations}
-            activeConversationId={activeConversationId}
-            onSelectConversation={onSelectConversation}
-            onDeleteConversation={onDeleteConversation}
-            onRenameConversation={onRenameConversation}
-          />
-        </div>
-
-        {/* Quick Links */}
-        <div className="px-4 py-3 border-t border-white/10">
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="font-medium text-xs">{SIDEBAR.QUICK_LINKS}</h3>
-          </div>
-          <div className="flex flex-wrap gap-2 text-xs">
-            <a
-              href={URLS.VYAGUTA_PORTAL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
-            >
-              <TbExternalLink />
-              <span>{SIDEBAR.PORTAL}</span>
-            </a>
-            <span className="text-gray-600">•</span>
-            <a
-              href={URLS.WIKI}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
-            >
-              <TbExternalLink />
-              <span>{SIDEBAR.WIKI}</span>
-            </a>
-            <span className="text-gray-600">•</span>
-            <a
-              href={URLS.SLACK_HELP}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 text-gray-400 hover:text-vyaguta-primary transition-colors"
-            >
-              <TbExternalLink />
-              <span>{SIDEBAR.HELP}</span>
-            </a>
-          </div>
-        </div>
-
-        {/* Footer */}
-        <div className="p-4 border-t border-white/10">
-          <div className="text-xs text-gray-500">
-            <p>{APP.COPYRIGHT}</p>
-            <div className="flex items-center justify-start gap-3 mt-2">
-              <span className="text-gray-500">{APP.VERSION}</span>
+            <div className="flex items-center justify-start gap-6 text-xs text-gray-400">
+              <p>&copy; {APP.VERSION}</p>
               <a
                 href={URLS.GITHUB_REPO}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 text-gray-500 hover:text-white transition-colors"
+                className="flex items-center gap-1 transition-colors hover:text-white"
               >
                 <FaGithub />
                 <span>{SIDEBAR.GITHUB}</span>
@@ -210,7 +208,7 @@ export function Sidebar({
             </div>
           </div>
         </div>
-      </div>
-    </aside>
+      </aside>
+    </>
   );
 }

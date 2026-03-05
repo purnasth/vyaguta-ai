@@ -7,94 +7,90 @@
 
 // App branding
 export const APP = {
-  NAME: "Vyaguta AI",
-  TAGLINE: "Your intelligent assistant",
-  VERSION: "v2.0 Vyaguta AI",
-  COPYRIGHT: "© 2025 Leapfrog Technology Inc.",
+  NAME: 'Vyaguta AI',
+  TAGLINE: 'Your intelligent assistant',
+  VERSION: 'v2.0 Vyaguta AI',
+  COPYRIGHT: '© 2026 Leapfrog Technology Inc.',
 } as const;
 
 // Chat input strings
 export const CHAT_INPUT = {
-  PLACEHOLDER: "Ask me anything about Vyaguta...",
-  QUICK_QUESTIONS: "Quick Questions",
-  SURPRISE_ME: "Surprise Me",
+  PLACEHOLDER: 'Ask me anything about Vyaguta...',
+  QUICK_QUESTIONS: 'Quick Questions',
+  SURPRISE_ME: 'Surprise Me',
 } as const;
 
 // Sidebar strings
 export const SIDEBAR = {
-  SEARCH_PLACEHOLDER: "Search messages...",
-  NEW_CHAT: "New Chat",
-  CLEAR: "Clear",
-  EXPORT: "Export",
-  CONVERSATIONS: "Conversations",
-  QUICK_LINKS: "Quick Links",
-  PORTAL: "Portal",
-  WIKI: "Wiki",
-  HELP: "Help",
-  GITHUB: "GitHub",
+  SEARCH_PLACEHOLDER: 'Search your chat...',
+  NEW_CHAT: 'New Chat',
+  CLEAR: 'Clear',
+  EXPORT: 'Export',
+  CONVERSATIONS: 'Conversations',
+  QUICK_LINKS: 'Quick Links',
+  PORTAL: 'Portal',
+  WIKI: 'Wiki',
+  HELP: 'Help',
+  GITHUB: 'GitHub',
 } as const;
 
 // Welcome message strings
 export const WELCOME = {
-  GREETING: "👋",
-  TITLE: "Welcome to",
-  SUBTITLE: "— your smart assistant!",
+  GREETING: '👋',
+  TITLE: 'Welcome to',
+  SUBTITLE: '— your smart assistant!',
   DESCRIPTION:
     "Hello! I am Vyaguta's assistant, here to help you with information about Vyaguta's modules, features, onboarding procedures, tools, policies, coding guidelines, and details related to Vyaguta and Leapfrog. If you have any questions or need assistance, feel free to ask!",
-  ASK_ABOUT: "Ask me about:",
-  TIP_PREFIX: "💡",
-  TIP_TEXT: "Try the",
-  TIP_OR: "or",
-  TIP_SUFFIX: "for instant answers!",
+  ASK_ABOUT: 'Ask me about:',
+  TIP_PREFIX: '💡',
+  TIP_TEXT: 'Try the',
+  TIP_OR: 'or',
+  TIP_SUFFIX: 'for instant answers!',
   FEATURES: [
-    { icon: "✨", text: "Vyaguta modules (OKR, Pulse, Attendance, Teams, Core, & more)" },
-    { icon: "🚀", text: "Onboarding, GAP & growth programs" },
-    { icon: "🛠️", text: "Tech tools, resources & coding guidelines" },
-    { icon: "📅", text: "Company calendar, policies & perks" },
-    { icon: "👥", text: "Team info, contacts & speak-up channels" },
-    { icon: "❓", text: "Anything about Vyaguta or Leapfrog" },
+    {
+      icon: '✨',
+      text: 'Vyaguta modules (OKR, Pulse, Attendance, Teams, Core, & more)',
+    },
+    { icon: '🚀', text: 'Onboarding, GAP & growth programs' },
+    { icon: '🛠️', text: 'Tech tools, resources & coding guidelines' },
+    { icon: '📅', text: 'Company calendar, policies & perks' },
+    { icon: '👥', text: 'Team info, contacts & speak-up channels' },
+    { icon: '❓', text: 'Anything about Vyaguta or Leapfrog' },
   ],
 } as const;
 
 // Message bubble strings
 export const MESSAGE = {
-  COPY: "Copy",
-  COPIED: "Copied",
-  SOURCES: "Sources:",
+  COPY: 'Copy',
+  COPIED: 'Copied',
+  SOURCES: 'Sources:',
 } as const;
 
 // Conversation list strings
 export const CONVERSATION = {
-  NO_CONVERSATIONS: "No conversations yet",
-  START_NEW: "Start a new chat to begin",
-  MESSAGES_LABEL: "messages",
-  RENAME: "Rename",
-  DELETE: "Delete",
+  NO_CONVERSATIONS: 'No conversations yet',
+  START_NEW: 'Start a new chat to begin',
+  MESSAGES_LABEL: 'messages',
+  RENAME: 'Rename',
+  DELETE: 'Delete',
 } as const;
 
 // Typing indicator strings
 export const TYPING = {
-  THINKING: "Vyaguta AI is thinking",
+  THINKING: 'Vyaguta AI is thinking',
 } as const;
 
 // Alt text for accessibility
 export const ALT_TEXT = {
-  APP_LOGO: "Vyaguta AI",
-  USER_AVATAR: "User",
-  ASSISTANT_AVATAR: "Vyaguta AI",
+  APP_LOGO: 'Vyaguta AI',
+  USER_AVATAR: 'User',
+  ASSISTANT_AVATAR: 'Vyaguta AI',
 } as const;
 
 // External URLs
 export const URLS = {
-  VYAGUTA_PORTAL: "https://vyaguta.lftechnology.com/",
-  WIKI: "https://lftechnology.atlassian.net/wiki/spaces/VYAGUTA/overview",
-  SLACK_HELP: "https://lftechnology.slack.com/archives/CDUAPJSM9",
-  GITHUB_REPO: "https://github.com/purnasth/genai-chatbot",
-} as const;
-
-// Image URLs
-export const IMAGES = {
-  APP_AVATAR: "https://avatars.githubusercontent.com/u/169975383?s=200&v=4",
-  USER_AVATAR:
-    "https://avatars.githubusercontent.com/u/107195487?s=400&u=6120358cdcf760f65cfda7f81e982dfb1d8f7a27&v=4",
+  VYAGUTA_PORTAL: 'https://vyaguta.lftechnology.com/',
+  WIKI: 'https://lftechnology.atlassian.net/wiki/spaces/VYAGUTA/overview',
+  SLACK_HELP: 'https://lftechnology.slack.com/archives/CDUAPJSM9',
+  GITHUB_REPO: 'https://github.com/purnasth/genai-chatbot',
 } as const;
