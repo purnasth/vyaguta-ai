@@ -2,9 +2,9 @@
  * Conversation utilities
  */
 
-import type { ChatSession, Message } from "../types";
-import { DEFAULTS } from "../constants";
-import { getCurrentISOString } from "./date";
+import type { ChatSession, Message } from '../types';
+import { DEFAULTS } from '../constants';
+import { getCurrentISOString } from './date';
 
 /**
  * Generate a conversation name from messages
@@ -12,11 +12,11 @@ import { getCurrentISOString } from "./date";
 export function generateConversationName(messages: Message[]): string {
   if (messages.length === 0) return DEFAULTS.CONVERSATION_NAME;
 
-  const firstUserMessage = messages.find((m) => m.role === "user");
+  const firstUserMessage = messages.find((m) => m.role === 'user');
   if (firstUserMessage) {
     const content = firstUserMessage.content;
     return content.length > DEFAULTS.MAX_CONVERSATION_NAME_LENGTH
-      ? content.slice(0, DEFAULTS.MAX_CONVERSATION_NAME_LENGTH) + "..."
+      ? content.slice(0, DEFAULTS.MAX_CONVERSATION_NAME_LENGTH) + '...'
       : content;
   }
 

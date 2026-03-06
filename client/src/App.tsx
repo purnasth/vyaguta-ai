@@ -1,6 +1,11 @@
 import { useState, useCallback } from 'react';
+
+import { UI_SIDEBAR, VYAGUTA_AI_ROLES } from './constants';
+
 import { Sidebar, ChatContainer } from './components';
+
 import { useConversations, useQuickQuestions } from './hooks';
+
 import { exportChatAsJson, countMessagesByRole } from './utils';
 
 function App() {
@@ -43,9 +48,11 @@ function App() {
 
   const filteredMessages = getFilteredMessages(searchTerm);
 
-  // TODO: make the enums for the role
-  const userMessageCount = countMessagesByRole(messages, 'user');
-  const assistantMessageCount = countMessagesByRole(messages, 'assistant');
+  const userMessageCount = countMessagesByRole(messages, VYAGUTA_AI_ROLES.USER);
+  const assistantMessageCount = countMessagesByRole(
+    messages,
+    VYAGUTA_AI_ROLES.ASSISTANT,
+  );
 
   return (
     <>
@@ -76,6 +83,7 @@ function App() {
         onSurprise={handleSurprise}
         quickQuestions={quickQuestions}
         sidebarOpen={sidebarOpen}
+        sidebarWidth={UI_SIDEBAR.SIDEBAR_WIDTH_DEFAULT}
       />
     </>
   );

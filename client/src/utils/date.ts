@@ -1,16 +1,10 @@
 /**
- * Date formatting utilities
- */
-
-import { TIME } from "../constants";
-
-/**
  * Format time for display in messages
  */
 export function formatMessageTime(date: Date = new Date()): string {
-  return date.toLocaleTimeString("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
     hour12: true,
   });
 }
@@ -22,20 +16,22 @@ export function formatMessageTime(date: Date = new Date()): string {
 export function formatRelativeDate(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
-  const diffDays = Math.floor(
-    (now.getTime() - date.getTime()) / TIME.MS_PER_DAY,
-  );
+
+  const MS_PER_DAY = 1000 * 60 * 60 * 24;
+  const DAYS_IN_WEEK = 7;
+
+  const diffDays = Math.floor((now.getTime() - date.getTime()) / MS_PER_DAY);
 
   if (diffDays === 0) {
     return formatMessageTime(date);
   } else if (diffDays === 1) {
-    return "Yesterday";
-  } else if (diffDays < TIME.DAYS_IN_WEEK) {
-    return date.toLocaleDateString("en-US", { weekday: "short" });
+    return 'Yesterday';
+  } else if (diffDays < DAYS_IN_WEEK) {
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
   } else {
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
     });
   }
 }

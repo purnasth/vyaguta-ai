@@ -1,0 +1,5 @@
+export const UI_SIDEBAR = {
+  SIDEBAR_WIDTH_DEFAULT: 288,
+  SIDEBAR_WIDTH_MIN: 240,
+  SIDEBAR_WIDTH_MAX: 480,
+} as const;

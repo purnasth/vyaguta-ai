@@ -113,9 +113,7 @@ export function ConversationList({
           ) : (
             <>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-xs font-medium">
-                  {conversation.name}
-                </p>
+                <p className="truncate text-xs">{conversation.name}</p>
                 <p className="text-xxs truncate text-gray-500">
                   {conversation.messages.length} {CONVERSATION.MESSAGES_LABEL} •{' '}
                   {formatRelativeDate(conversation.updatedAt)}

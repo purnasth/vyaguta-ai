@@ -2,9 +2,9 @@
  * Message creation utilities
  */
 
-import type { Message } from "../types";
-import { MESSAGE_ROLES, ERROR_MESSAGES } from "../constants";
-import { formatMessageTime } from "./date";
+import type { Message } from '../types';
+import { VYAGUTA_AI_ROLES, ERROR_MESSAGES } from '../constants';
+import { formatMessageTime } from './date';
 
 /**
  * Create a user message
@@ -12,7 +12,7 @@ import { formatMessageTime } from "./date";
 export function createUserMessage(content: string): Message {
   return {
     id: crypto.randomUUID(),
-    role: MESSAGE_ROLES.USER,
+    role: VYAGUTA_AI_ROLES.USER,
     content: content.trim(),
     timestamp: formatMessageTime(),
   };
@@ -27,7 +27,7 @@ export function createAssistantMessage(
 ): Message {
   return {
     id: crypto.randomUUID(),
-    role: MESSAGE_ROLES.ASSISTANT,
+    role: VYAGUTA_AI_ROLES.ASSISTANT,
     content,
     timestamp: formatMessageTime(),
     sources,
@@ -58,7 +58,7 @@ export function filterMessagesBySearch(
  */
 export function countMessagesByRole(
   messages: Message[],
-  role: "user" | "assistant",
+  role: 'user' | 'assistant',
 ): number {
   return messages.filter((m) => m.role === role).length;
 }

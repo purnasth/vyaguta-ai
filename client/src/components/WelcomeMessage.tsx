@@ -6,7 +6,7 @@ import { Avatar } from './ui';
 
 export function WelcomeMessage() {
   return (
-    <div className="animate-fade-in mt-24 flex gap-3 text-sm">
+    <div className="animate-fade-in mt-24 flex flex-col gap-3 text-sm sm:flex-row">
       <div className="size-fit shrink-0">
         <Avatar />
       </div>
@@ -38,7 +38,7 @@ export function WelcomeMessage() {
               </ul>
             </div>
 
-            <div className="bg-vyaguta-gradient mt-8! w-fit rounded-xl px-3 py-2">
+            <div className="bg-vyaguta-gradient mt-8! w-fit rounded-xl px-3 py-2 text-xs sm:text-sm">
               <TbBulb className="mr-2 inline-block -translate-y-0.5 scale-125 align-middle text-yellow-300" />
               <span>
                 {WELCOME.TIP_TEXT}&nbsp;

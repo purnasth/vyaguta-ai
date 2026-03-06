@@ -443,7 +443,7 @@ with input_outer_col2:
             surprise_questions = [
                 "How does the onboarding process work?",
                 "What tools do employees use at Leapfrog?",
-                "Who is Purna and Whose number is this +9779808021753?",
+                "Who is Purna Shrestha?",
                 "Explain in detail about the GAP.",
                 "How to make a PR at Vyaguta?",
                 "What are the different modules in Vyaguta?",

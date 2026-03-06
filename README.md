@@ -1,78 +1,86 @@
-# Vyaguta AI Assistant
+# Vyaguta AI
 
-Vyaguta AI Assistant is an intelligent chatbot designed to help Leapfrog employees and new joiners quickly find information about Vyaguta’s modules, onboarding, policies, tools, and more. It leverages Retrieval-Augmented Generation (RAG), LangChain, and OpenAI’s LLMs to provide instant, context-aware answers from company documentation and knowledge bases.
+<!-- Vyaguta AI Assistant is an intelligent chatbot designed to help Leapfroggers quickly find information about Vyaguta’s modules, onboarding, policies, tools, and more. It leverages Retrieval-Augmented Generation (RAG), LangChain, and OpenAI’s LLMs to provide instant, context-aware answers from company documentation/APIs and knowledge bases. -->
 
-<img width="2566" height="1606" alt="53144_3aa9f665ec38d2b2c16cae4689619ddd5dd0d3b6d3f04f4d9795f087b25a6c6c" src="https://github.com/user-attachments/assets/f52c3cfd-0cdb-46bf-a23b-bb5261c68f99" />
+<!-- <img width="2566" height="1606" alt="Landing Page" src="https://github.com/user-attachments/assets/f52c3cfd-0cdb-46bf-a23b-bb5261c68f99" /> -->
+
+https://github.com/user-attachments/assets/9a9d62f5-5db4-4251-8311-b5207060842d
+
+---
+
+<details>
+<summary>UI Feature Gallery & Page Previews</summary>
+
+<img width="1710" height="1071" alt="Vyaguta AI Landing Page" src="https://github.com/user-attachments/assets/70ffea04-2364-465b-aac0-101a73b064b5" />
+
+<img width="1710" height="1071" alt="Vyaguta AI is thinking... Page" src="https://github.com/user-attachments/assets/7f7acbf5-681b-4e9a-b97e-2be98aa9c9b4" />
+
+<img width="1710" height="1071" alt="Vyaguta AI Answers Page" src="https://github.com/user-attachments/assets/f081eee2-1eb2-4e02-9f5b-f7f1977de8ea" />
+
+</details>
 
 ## What is Vyaguta AI Assistant?
 
 Vyaguta AI Assistant is your smart companion for all things Vyaguta and Leapfrog. It can:
 
-- Answer questions about Vyaguta modules (OKR, Pulse, Attendance, GAP, etc.)
+- Answer questions about Vyaguta modules (Core, OKR, Pulse, Attendance, Teams, Jump, Honor, Auth etc.)
 - Guide you through onboarding, policies, and company processes
 - Help you find team contacts, resources, and tools
 - Explain coding guidelines and best practices
-- Provide instant, reliable answers from internal docs and FAQs
+- Provide instant, reliable answers from internal docs, FAQs and APIs
 
 ## How does it work? (Workflow Overview)
 
-Vyaguta AI Assistant follows a Retrieval-Augmented Generation (RAG) workflow, combining company knowledge with advanced language models to deliver accurate, context-aware answers. Here’s how the system works:
+Vyaguta AI Assistant follows a Retrieval-Augmented Generation (RAG) workflow, combining company knowledge with advanced language models to deliver accurate# , context-aware answers. Here’s how the system works:
 
-### 1. Data Sources
+<details>
+<summary>1. Data Sources</summary>
+<br/>
 
 - **Local Documents:** Markdown files in the `docs/` directory (policies, onboarding, guidelines, etc.)
 - **Vyaguta API:** Live employee and people data fetched from Vyaguta’s internal API
-- **(Optional) Confluence:** Company wiki pages (integration available, see guides)
+- **Confluence:** Company wiki pages (integration available, see guides)
 
-### 2. Document Processing & Embeddings
+</details>
+
+<details>
+<summary>2. Document Processing & Embeddings</summary>
+<br/>
 
 - Documents are loaded and split into chunks using markdown header-based splitting for fine-grained retrieval
 - Each chunk is embedded using OpenAI Embeddings (Ada-002)
 - All embeddings are stored in a FAISS vector database/ chromaDB for fast similarity search
 
-### 3. Retrieval-Augmented Generation (RAG)
+</details>
+
+<details>
+<summary>3. Retrieval-Augmented Generation (RAG)</summary>
+<br/>
 
 - When a user asks a question, the system retrieves the most relevant document chunks using semantic search
 - A hybrid retriever with contextual compression ensures only the most relevant information is passed to the LLM
 
-### 4. Large Language Model (LLM)
+</details>
+
+<details>
+<summary>4. Large Language Model (LLM)</summary>
+<br/>
 
 - The retrieved context is sent to an OpenAI LLM (e.g., GPT-4.1-nano)
 - A custom prompt template ensures answers are tailored to Vyaguta and Leapfrog
 
-### 5. Answer Delivery
+</details>
+
+<details>
+<summary>5. Answer Delivery</summary>
+<br/>
 
 - The LLM generates a helpful, context-aware answer
 - The answer is displayed in a modern chat UI (Streamlit), with features like quick questions, reactions, and chat export
 
+</details>
+
 #### Visual Workflow
-
-```mermaid
-flowchart TD
-    A[User Query] --> B[LangChain Orchestration]
-    B --> C{RAG: Retrieve Relevant Docs}
-
-    subgraph "Data Sources"
-        D[Confluence Docs]
-        E[Vyaguta APIs]
-    end
-
-    subgraph "Vector Database"
-        H[Processed Document Chunks]
-        I[Vector Embeddings]
-        J[Metadata & Source Info]
-    end
-
-    D --> H
-    E --> H
-    H --> I
-
-    C --> I
-    I --> K[Context Retrieval]
-    K --> L[LLM OpenAI/GPT]
-    L --> M[Chatbot Response]
-    B --> L
-```
 
 ```mermaid
 flowchart TD
@@ -128,6 +136,9 @@ For a detailed technical breakdown and architecture, see `/guides/workflow-expla
 
 ---
 
+<details>
+<summary><strong>Project Structure Overview</strong></summary>
+
 ## Project Structure
 
 ```
@@ -154,9 +165,14 @@ vyaguta-ai/
 └── requirements.txt         # Python dependencies
 ```
 
+</details>
+
 ---
 
-## Quick Start
+<details>
+<summary><strong>Set Up & Usage</strong></summary>
+
+## Set Up & Usage
 
 ### Option 1: React + FastAPI (Recommended)
 
@@ -180,7 +196,7 @@ The API will be available at `http://localhost:8000`
 ```bash
 cd client
 pnpm install
-pnpm dev
+pnpm run dev
 ```
 
 The UI will be available at `http://localhost:5173`
@@ -213,17 +229,50 @@ curl -X POST http://localhost:8000/api/chat \
   -d '{"message": "What is Vyaguta?"}'
 ```
 
+</details>
+
 ---
 
-## Environment Variables
+<details>
+<summary><strong>Environment Variables</strong></summary>
 
 Create a `.env` file in the root directory:
 
 ```env
-OPENAI_API_KEY=your_openai_api_key
-VYAGUTA_REFRESH_TOKEN=your_vyaguta_refresh_token
-ENV=development
+# Confluence API credentials
+CONFLUENCE_BASE_URL=your_confluence_base_url_here
+CONFLUENCE_EMAIL=your_confluence_email_here
+CONFLUENCE_API_TOKEN=your_confluence_api_token_here
+CONFLUENCE_SPACE_KEYS=space_key1,space_key2
+
+# Vyaguta API credentials
+# VYAGUTA_ACCESS_TOKEN=your_vyaguta_access_token_here
+VYAGUTA_REFRESH_TOKEN=your_vyaguta_refresh_token_here
+
+# OPENAI API key
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Vyaguta
+# VYAGUTA_BASE_URL=`https://example.com`
+VYAGUTA_CLIENT_ID=your_vyaguta_client_id_here
+
+# --- Environment Configuration ---
+# Set the environment for logging and debug control.
+# Options:
+#   local      - For local development (minimal debug output)
+#   test       - For running tests (shows all debug logs)
+#   production - For production deployment (no debug logs)
+ENV=local
+
+# --- LangSmith Configuration ---
+# Get your API key from https://smith.langchain.com/
+# Create a new project for your RAG pipeline monitoring
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=your_langchain_api_key_here
+LANGCHAIN_PROJECT=your_langchain_project_name_here
 ```
+
+</details>
 
 ---
 

@@ -1,13 +1,13 @@
 import { useRef, useEffect } from 'react';
 
-import { UI } from '@/constants';
-
 import type { Message, QuickQuestion } from '../types';
 
-import { ChatInput } from './ChatInput';
-import { MessageBubble } from './MessageBubble';
-import { WelcomeMessage } from './WelcomeMessage';
-import { TypingIndicator } from './TypingIndicator';
+import {
+  ChatInput,
+  MessageBubble,
+  WelcomeMessage,
+  TypingIndicator,
+} from './index';
 
 interface ChatContainerProps {
   messages: Message[];
@@ -16,6 +16,7 @@ interface ChatContainerProps {
   onSurprise: () => void;
   quickQuestions: QuickQuestion[];
   sidebarOpen: boolean;
+  sidebarWidth: number;
 }
 
 export function ChatContainer({
@@ -25,6 +26,7 @@ export function ChatContainer({
   onSurprise,
   quickQuestions,
   sidebarOpen,
+  sidebarWidth,
 }: ChatContainerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -32,10 +34,9 @@ export function ChatContainer({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
-  const sidebarWidth = UI.SIDEBAR_WIDTH_DEFAULT;
   return (
     <main
-      className="chat-container ml-auto flex max-h-screen flex-1 flex-col"
+      className="chat-wrapper ml-auto flex max-h-screen flex-1 flex-col"
       style={{ width: sidebarOpen ? `calc(100% - ${sidebarWidth}px)` : '100%' }}
     >
       <div className="overflow-y-auto px-4 py-6">
@@ -44,22 +45,21 @@ export function ChatContainer({
             {messages.length === 0 ? (
               <WelcomeMessage />
             ) : (
-              <div className="mt-16 mb-48 text-sm">
+              <div className="px-3 pt-12 pb-48 text-sm sm:px-2 xl:pt-16 xl:pb-64">
                 {messages.map((message) => (
                   <MessageBubble key={message.id} message={message} />
                 ))}
+                {isLoading && <TypingIndicator />}
               </div>
             )}
-
-            {isLoading && <TypingIndicator />}
 
             <div ref={messagesEndRef} />
           </div>
         </div>
       </div>
 
-      {/* TODO: add the inner shadow after tailwind 4 */}
-      <div className="chat-container fixed bottom-0 left-1/2 mx-auto mb-3 w-2/5 -translate-x-1/2 rounded-3xl border border-white/10 p-3 backdrop-blur-md">
+      <div className="fixed bottom-3 left-1/2 mx-auto w-[95%] max-w-162.5 -translate-x-1/2 rounded-3xl border border-white/10 p-3 shadow-[inset_0_4px_8px_rgba(255,255,255,0.2)] backdrop-blur-md md:w-3/4 xl:w-2/5">
+        {isLoading && <div className="loading-glow-indicator"></div>}
         <div className="mx-auto max-w-4xl">
           <ChatInput
             onSend={onSendMessage}

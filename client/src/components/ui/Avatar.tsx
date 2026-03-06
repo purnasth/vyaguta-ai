@@ -5,7 +5,8 @@ export const Avatar = () => {
     <img
       src={IMAGES.APP_AVATAR}
       alt={ALT_TEXT.APP_LOGO}
-      className="size-10 object-contain"
+      className="size-8 sm:size-10 object-contain"
+      draggable={false}
     />
   );
 };

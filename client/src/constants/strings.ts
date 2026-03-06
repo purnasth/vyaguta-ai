@@ -1,18 +1,3 @@
-/**
- * Application UI Strings (English)
- *
- * Centralized location for all user-facing text.
- * Enables easy localization and consistency across the app.
- */
-
-// App branding
-export const APP = {
-  NAME: 'Vyaguta AI',
-  TAGLINE: 'Your intelligent assistant',
-  VERSION: 'v2.0 Vyaguta AI',
-  COPYRIGHT: '© 2026 Leapfrog Technology Inc.',
-} as const;
-
 // Chat input strings
 export const CHAT_INPUT = {
   PLACEHOLDER: 'Ask me anything about Vyaguta...',
@@ -57,13 +42,6 @@ export const WELCOME = {
     { icon: '👥', text: 'Team info, contacts & speak-up channels' },
     { icon: '❓', text: 'Anything about Vyaguta or Leapfrog' },
   ],
-} as const;
-
-// Message bubble strings
-export const MESSAGE = {
-  COPY: 'Copy',
-  COPIED: 'Copied',
-  SOURCES: 'Sources:',
 } as const;
 
 // Conversation list strings

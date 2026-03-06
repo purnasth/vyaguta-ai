@@ -12,10 +12,10 @@ import { FaGithub } from 'react-icons/fa';
 
 import type { QuickQuestion, ChatSession } from '../types';
 
-import { APP, SIDEBAR, URLS, UI, STORAGE_KEYS } from '../constants';
+import { APP, SIDEBAR, URLS, UI_SIDEBAR, STORAGE_KEYS } from '../constants';
 
-import { Logo } from './ui/Logo';
-import { ConversationList } from './ConversationList';
+import { Logo } from './ui';
+import { ConversationList } from './index';
 
 import { useResizable } from '../hooks';
 
@@ -54,9 +54,9 @@ export function Sidebar({
   onRenameConversation,
 }: SidebarProps) {
   const { width, isResizing, startResize } = useResizable({
-    minWidth: UI.SIDEBAR_WIDTH_MIN,
-    maxWidth: UI.SIDEBAR_WIDTH_MAX,
-    defaultWidth: UI.SIDEBAR_WIDTH_DEFAULT,
+    minWidth: UI_SIDEBAR.SIDEBAR_WIDTH_MIN,
+    maxWidth: UI_SIDEBAR.SIDEBAR_WIDTH_MAX,
+    defaultWidth: UI_SIDEBAR.SIDEBAR_WIDTH_DEFAULT,
     storageKey: STORAGE_KEYS.SIDEBAR_STATE + '_width',
   });
 
@@ -65,7 +65,7 @@ export function Sidebar({
       {!isOpen && (
         <button
           onClick={onToggle}
-          className="fixed top-4 left-4 z-50 rounded-lg p-2 transition-colors hover:bg-white/10"
+          className="fixed top-4 left-4 z-50 rounded-lg p-2 shadow-[inset_0_3px_8px_rgba(255,255,255,0.1)] backdrop-blur-xs transition-colors hover:bg-white/10"
           aria-label="Open sidebar"
         >
           <TbMenu2 className="text-xl" />
@@ -84,13 +84,13 @@ export function Sidebar({
         )}
         <div
           className="flex flex-1 flex-col gap-6 p-4"
-          style={{ minWidth: UI.SIDEBAR_WIDTH_MIN }}
+          style={{ minWidth: UI_SIDEBAR.SIDEBAR_WIDTH_MIN }}
         >
           <div className="flex items-center justify-between">
             <Logo />
             <button
               onClick={onToggle}
-              className="rounded-lg bg-white/5 p-2 transition-colors hover:bg-white/10"
+              className="rounded-lg bg-white/5 p-2 shadow-[inset_0_3px_8px_rgba(255,255,255,0.1)] transition-colors hover:bg-white/10"
             >
               <TbChevronLeft className="text-xl" />
             </button>
