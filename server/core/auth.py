@@ -1,7 +1,7 @@
 import os
 import requests
-from config import API_TOKEN_URL, CLIENT_ID
-from log_utils import debug_log, output_log
+from .config import API_TOKEN_URL, CLIENT_ID
+from .log_utils import debug_log, output_log
 
 
 def refresh_access_token():

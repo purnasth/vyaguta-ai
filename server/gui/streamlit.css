@@ -49,36 +49,6 @@ code span {
   font-family: "Material Symbols Rounded" !important;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-}
-
-label,
-a,
-input,
-textarea,
-button {
-  font-weight: 400;
-}
-
-strong,
-b {
-  font-weight: 500 !important;
-}
-
-p,
-span,
-ul,
-li,
-input::placeholder- {
-  font-weight: 300 !important;
-}
-
 .gradient-text {
   background: var(--vyaguta-gradient-loading);
   background-size: 300% 300%;
@@ -107,7 +77,7 @@ input::placeholder- {
   /* backdrop-filter: blur(3px); */
 }
 
-.st-emotion-cache-13k62yr {
+.st-emotion-cache-1yiq2ps {
   background: rgb(14, 17, 23, 0);
   background: var(--vyaguta-gradient-low) !important;
 }

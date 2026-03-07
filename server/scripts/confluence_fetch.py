@@ -1,4 +1,4 @@
-from log_utils import debug_log, output_log
+from server.core.log_utils import debug_log, output_log
 import os
 import requests
 from markdownify import markdownify as md

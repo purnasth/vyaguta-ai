@@ -22,7 +22,7 @@ import json
 import time
 import datetime
 import streamlit as st
-from main import qa_chain, get_llm, OPENAI_API_KEY
+from server.core.main import qa_chain, get_llm, OPENAI_API_KEY
 
 st.set_page_config(
     page_title="Vyaguta AI",
@@ -31,7 +31,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-with open("streamlit.css") as f:
+# Load CSS from the same directory as this file
+css_path = os.path.join(os.path.dirname(__file__), "streamlit.css")
+with open(css_path) as f:
     st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if "messages" not in st.session_state:
@@ -399,7 +401,7 @@ if st.session_state.pop("reset_quick_questions", False):
 input_outer_col1, input_outer_col2, input_outer_col3 = st.columns([1, 4, 1])
 with input_outer_col2:
     user_input = st.text_area(
-        "",
+        "User Input",  # Non-empty label for accessibility
         key=f"user_input_{st.session_state['input_counter']}",
         height=80,
         value=default_user_input,
@@ -411,7 +413,7 @@ with input_outer_col2:
     btns_col1, btns_col2, btns_col3 = st.columns([3, 1, 1])
     with btns_col1:
         quick_questions = st.selectbox(
-            "",
+            "Quick Questions",  # Non-empty label for accessibility
             [
                 "Quick Questions",
                 "What is Vyaguta?",
@@ -441,7 +443,7 @@ with input_outer_col2:
             surprise_questions = [
                 "How does the onboarding process work?",
                 "What tools do employees use at Leapfrog?",
-                "Who is Purna and Whose number is this +9779808021753?",
+                "Who is Purna Shrestha?",
                 "Explain in detail about the GAP.",
                 "How to make a PR at Vyaguta?",
                 "What are the different modules in Vyaguta?",

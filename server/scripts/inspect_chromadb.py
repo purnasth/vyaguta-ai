@@ -4,7 +4,7 @@ Usage:
     python inspect_chromadb.py
 """
 
-from log_utils import debug_log, output_log
+from server.core.log_utils import debug_log, output_log
 from langchain_chroma import Chroma
 from langchain_openai import OpenAIEmbeddings
 from dotenv import load_dotenv

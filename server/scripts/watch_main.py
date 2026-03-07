@@ -5,7 +5,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import os
 import threading
-from log_utils import debug_log, output_log
+from server.core.log_utils import debug_log, output_log
 
 WATCHED_EXTENSIONS = [".py"]
 EXCLUDE_DIRS = {"__pycache__", ".venv", "chroma_db"}

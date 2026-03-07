@@ -17,10 +17,10 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from auth import app_startup
-from rag_pipeline import setup_rag_pipeline
-from log_utils import debug_log, output_log
-from config import DOC_DIRECTORIES
+from .auth import app_startup
+from .rag_pipeline import setup_rag_pipeline
+from .log_utils import debug_log, output_log
+from .config import DOC_DIRECTORIES
 
 
 # --- Authenticate and refresh Vyaguta access token at startup ---
