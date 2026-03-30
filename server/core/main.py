@@ -14,9 +14,11 @@ All major functions and classes are documented with docstrings for clarity and m
 import os
 import time
 from dotenv import load_dotenv
-from langchain_openai import OpenAIEmbeddings, ChatOpenAI
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+from operator import itemgetter
 from .auth import app_startup
 from .rag_pipeline import setup_rag_pipeline
 from .log_utils import debug_log, output_log
@@ -94,11 +96,11 @@ Use Chain of Thought reasoning: Think step by step, and show your reasoning proc
 Context:
 {context}
 
-Question: {question}
+Question: {input}
 Answer:
 Let's think step by step.
 """,
-        input_variables=["context", "question"],
+        input_variables=["context", "input"],
     )
 
 
@@ -123,27 +125,63 @@ def get_llm(api_key: str):
 llm = get_llm(OPENAI_API_KEY)
 
 
+def format_docs(docs):
+    """Format documents for context."""
+    return "\n\n".join([doc.page_content for doc in docs])
+
+
 def build_qa_chain(llm, retriever, prompt):
     """
-    Builds the RetrievalQA chain using LangChain for RAG.
+    Builds a QA chain using modern LangChain LCEL approach.
 
     Args:
         llm: The language model instance.
         retriever: The retriever for document search.
         prompt: The prompt template for prompt engineering.
     Returns:
-        RetrievalQA: The QA chain for answering questions.
+        Chain: The QA chain for answering questions.
     """
     debug_log("Building QA chain")
-    chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        retriever=retriever,
-        chain_type="stuff",
-        chain_type_kwargs={"prompt": prompt},
-        return_source_documents=True,
+    
+    # Create the chain using LCEL (LangChain Expression Language)
+    rag_chain = (
+        {
+            "context": itemgetter("input") | retriever | format_docs,
+            "input": itemgetter("input")
+        }
+        | prompt
+        | llm
+        | StrOutputParser()
     )
+    
+    # Wrapper to maintain compatibility with existing API
+    class ChainWrapper:
+        def __init__(self, chain, retriever):
+            self.chain = chain
+            self.retriever = retriever
+            
+        def invoke(self, input_dict):
+            question = input_dict.get("input", "")
+            
+            # Get the answer from the chain
+            answer = self.chain.invoke(input_dict)
+            
+            # Get source documents for compatibility
+            try:
+                docs = self.retriever.invoke(question)
+            except AttributeError:
+                try:
+                    docs = self.retriever.get_relevant_documents(question)
+                except AttributeError:
+                    docs = self.retriever.similarity_search(question, k=4)
+            
+            return {
+                "answer": answer,
+                "source_documents": docs
+            }
+    
     debug_log("QA chain built")
-    return chain
+    return ChainWrapper(rag_chain, retriever)
 
 
 qa_chain = build_qa_chain(llm, retriever, prompt)
@@ -201,9 +239,9 @@ def main():
         full_query = f"{history_text}User: {question}"
 
         debug_log("Invoking QA chain with context window")
-        result = qa_chain.invoke({"query": full_query})
+        result = qa_chain.invoke({"input": full_query})
         debug_log("QA chain invocation complete")
-        answer = result["result"]
+        answer = result["answer"]
         unsure_phrases = [
             "I'm not sure about that based on the current information",
             "I am not sure",

@@ -25,7 +25,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     return (
       <div className="animate-fade-in flex justify-end gap-3">
         <div className="max-w-[90%] sm:max-w-[80%] lg:max-w-[70%]">
-          <div className="user-bubble bg-vyaguta-gradient rounded-2xl rounded-br-none px-3 py-2 sm:rounded-3xl sm:px-4 sm:py-3">
+          <div className="user-bubble bg-vyaguta-gradient rounded-2xl !rounded-br-none px-3 py-2 sm:rounded-3xl sm:px-4 sm:py-3">
             <p className="mb-0 whitespace-pre-wrap">{message.content}</p>
           </div>
           <p className="text-right text-xs text-gray-500 sm:mt-1">

@@ -171,9 +171,9 @@ def get_chat_response(
     full_query = f"{history_text}User: {question}"
 
     debug_log(f"Processing query: {question[:50]}...")
-    result = qa_chain.invoke({"query": full_query})
+    result = qa_chain.invoke({"input": full_query})
 
-    answer = result["result"]
+    answer = result["answer"]
 
     # Extract sources
     source_docs = result.get("source_documents", [])
